@@ -28,21 +28,24 @@
 
 \begin{pycode}
 
-vel = ["","B","C","D","E"]
+import string
+alpha = string.uppercase
+
+node = ["","B","C","D","E"]
 num_of_channels = 20
 half = num_of_channels/2.
-num_of_resistors = 4
+num_of_resistors = 6
 origin = [0,0]
 x_scale = 2
-y_scale = 0.75
+y_scale = 0.8
 offset = 1
 
 # Loop that generates the resistive network diagram and labels it with the proper velocities in each leg (i.e. resistor).
-for i in range(0,num_of_resistors):
-    for j in range(0,num_of_channels):
+for i in range(num_of_resistors):
+    for j in range(num_of_channels):
     	jay = (j-half+.5)*y_scale+origin[1] #adjusts nodes in y by centering them around origin and scaling the spacing.
 	print(r"\draw (%s,%s) node[font=\small, anchor=east]{A} to (%s,%s);" % (origin[0], origin[1], origin[0]+offset, jay)) # Draws the horizontal resistors.
-	print(r"\draw (%s,%s) node[font=\small, anchor=south]{%s} to [R=$%s$,-*,i^>=$$] (%s,%s) node[font=\small, anchor=south]{%s};" % (i*x_scale+origin[0]+offset, jay, vel[i], "v", (i+1)*x_scale+origin[0]+offset, jay, vel[i+1])) # Draws the horizontal resistors.
+	print(r"\draw (%s,%s) to [R=$%s$,-*,i^>=$$] (%s,%s) node[font=\small, anchor=south]{%s};" % (i*x_scale+origin[0]+offset, jay, "v", (i+1)*x_scale+origin[0]+offset, jay, str(num_of_channels-j)+alpha[i+1])) # Draws the horizontal resistors.
 
 \end{pycode}
 
