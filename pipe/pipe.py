@@ -19,14 +19,14 @@ def pipe():
     """
     Solves systems of equations to determine mass flow rates and pressures in a fluidics network.
     """ 
-    total_unknowns = 148 # Total number of unkown variables.  
-    file_name = 'coefficients2.xlsx'
+    total_unknowns = 222 # Total number of unkown variables.  
+    file_name = 'coefficients-20.xlsx'
     variable_names = xlsnatch(os.path.join(mypath,file_name),1,2,2,1,total_unknowns+1,"list") # Import variable names from Excel as list. 
     num_pressure_unknowns = 0 # Initiate variable.
     for name in variable_names[0][:]:
         num_pressure_unknowns += (name[:1].encode('ascii','ignore')=="P") # Determine how many pressure unknowns there are.
            
-    Diameters = xlsnatch(os.path.join(mypath,file_name),0,12,2,1,total_unknowns-num_pressure_unknowns+1,"matrix") # Snatch diameters [m] for later calculations.
+    Diameters = xlsnatch(os.path.join(mypath,file_name),0,50,2,1,total_unknowns-num_pressure_unknowns+1,"matrix") # Snatch diameters [m] for later calculations.
     rho = 1000 # Density of water [kg/m^3].
     
     # Set coefficients for equation Ax+Bx^2+C.

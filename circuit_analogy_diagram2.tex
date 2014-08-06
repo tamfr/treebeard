@@ -9,46 +9,54 @@
 %     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 \documentclass[12pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage[cm]{fullpage}
 \usepackage{circuitikz}		
 \usepackage{pythontex}
+\usepackage{pdflscape}
 
 \begin{document}
 
-%\begin{pycode}
-%
-%from pipe.pipe import pipe # Import the module that runs the python program pipe.py, which analyzes the fluidics network.
-%ans = pipe() # Run the function that returns all velocities and mass flow rates, and other information for the fluidics network stored as a python dictionary.
-%
-%\end{pycode}
+\begin{pycode}
+
+from pipe.pipe import pipe # Import the module that runs the python program pipe.py, which analyzes the fluidics network.
+ans = pipe() # Run the function that returns all velocities and mass flow rates, and other information for the fluidics network stored as a python dictionary.
+
+\end{pycode}
 
 % =========================================== new section =========================================== 
 \section{Velocity Diagram}
+
+\begin{landscape}
 
 \begin{circuitikz}[font=\tiny]	
 
 \begin{pycode}
 
+#ans={'P_B11': 117235.5023, 'P_B10': 117235.5023, 'P_B13': 117235.5023, 'P_B12': 117235.5023, 'P_B15': 117235.5023, 'P_B14': 117235.5023, 'P_B17': 117235.5023, 'P_B16': 117235.5023, 'P_B19': 117235.5023, 'P_B18': 117235.5023, 'P_E20': 95956.955591, 'P_B9': 117235.5023, 'P_B8': 117235.5023, 'P_B1': 117235.5023, 'P_B3': 117235.5023, 'P_B2': 117235.5023, 'P_B5': 117235.5023, 'P_B4': 117235.5023, 'P_B7': 117235.5023, 'P_B6': 117235.75044, 'P_C20': 117034.26245, 'P_F20': 96447.455787, 'm_BC2': 4.46402e-07, 'm_BC3': 4.46402e-07, 'm_BC1': 4.46402e-07, 'P_E8': 95956.956033, 'P_E9': 95956.956033, 'm_BC4': 4.46402e-07, 'm_BC5': 4.46402e-07, 'P_E4': 95956.956033, 'P_E5': 95956.956033, 'P_E6': 95956.956124, 'm_BC9': 4.46402e-07, 'P_E1': 95956.956033, 'P_E2': 95956.956033, 'P_E3': 95956.956033, 'V_SA': -3.08364e-05, 'V_DE1': 0.000225532, 'm_DE12': 4.46402e-07, 'V_DE2': 0.000225532, 'V_DE5': 0.000225532, 'V_DE4': 0.000225532, 'm_DE16': 4.46402e-07, 'V_DE6': 0.000225535, 'V_DE9': 0.000225532, 'm_DE19': 4.46402e-07, 'V_CD20': 0.63153, 'm_BC8': 4.46402e-07, 'P_F15': 96447.455787, 'P_F14': 96447.455787, 'P_F17': 96447.455787, 'P_F16': 96447.455787, 'P_F11': 96447.455787, 'P_F10': 96447.455787, 'P_F13': 96447.455787, 'P_F12': 96447.455787, 'P_F19': 96447.455787, 'P_F18': 96447.455787, 'm_AB18': 4.46402e-07, 'm_AB19': 4.46402e-07, 'm_AB10': 4.46402e-07, 'm_AB11': 4.46402e-07, 'm_AB12': 4.46402e-07, 'm_AB13': 4.46402e-07, 'm_AB14': 4.46402e-07, 'm_AB15': 4.46402e-07, 'm_AB16': 4.46402e-07, 'm_AB17': 4.46402e-07, 'm_CD20': 4.46402e-07, 'V_AB20': 0.00227351, 'V_EF15': 7.017e-06, 'V_EF14': 7.017e-06, 'V_EF17': 7.017e-06, 'V_EF16': 7.017e-06, 'V_EF11': 7.017e-06, 'V_EF10': 7.017e-06, 'V_EF13': 7.017e-06, 'V_EF12': 7.017e-06, 'V_EF19': 7.017e-06, 'V_EF18': 7.017e-06, 'm_AB8': 4.46402e-07, 'm_AB9': 4.46402e-07, 'm_AB6': 4.46408e-07, 'm_AB7': 4.46402e-07, 'm_AB4': 4.46402e-07, 'm_AB5': 4.46402e-07, 'm_AB2': 4.46402e-07, 'm_AB3': 4.46402e-07, 'm_AB1': 4.46402e-07, 'm_CD8': 4.46402e-07, 'm_CD9': 4.46402e-07, 'm_CD2': 4.46402e-07, 'm_CD3': 4.46402e-07, 'm_CD1': 4.46402e-07, 'm_CD6': 4.46408e-07, 'm_CD7': 4.46402e-07, 'm_CD4': 4.46402e-07, 'm_CD5': 4.46402e-07, 'P_D9': 98916.379033, 'P_D8': 98916.379033, 'P_D7': 98916.379033, 'P_D6': 98916.379341, 'P_D5': 98916.379033, 'P_D4': 98916.379033, 'P_D3': 98916.379033, 'P_D2': 98916.379033, 'P_D1': 98916.379033, 'V_BC1': 0.000225532, 'V_BC3': 0.000225532, 'V_BC2': 0.000225532, 'V_BC5': 0.000225532, 'V_BC4': 0.000225532, 'V_BC7': 0.000225532, 'V_BC6': 0.000225535, 'V_BC9': 0.000225532, 'V_BC8': 0.000225532, 'V_AB5': 0.00227351, 'V_AB4': 0.00227351, 'V_AB7': 0.00227351, 'V_AB6': 0.00227354, 'V_AB1': 0.00227351, 'V_AB3': 0.00227351, 'V_AB2': 0.00227351, 'V_AB9': 0.00227351, 'V_AB8': 0.00227351, 'm_DE20': 4.46402e-07, 'V_FZ20': 0.000225532, 'm_SA': -8.92805e-06, 'm_BC6': 4.46408e-07, 'm_BC7': 4.46402e-07, 'm_EF6': 4.46408e-07, 'm_EF7': 4.46402e-07, 'm_FZ20': 1.43478e-05, 'm_EF4': 4.46402e-07, 'V_DE19': 0.000225532, 'V_DE18': 0.000225532, 'm_EF5': 4.46402e-07, 'V_DE11': 0.000225532, 'V_DE10': 0.000225532, 'V_DE13': 0.000225532, 'V_DE12': 0.000225532, 'V_DE15': 0.000225532, 'V_DE14': 0.000225532, 'V_DE17': 0.000225532, 'V_DE16': 0.000225532, 'P_E7': 95956.956033, 'm_EF20': 4.46401e-07, 'P_F2': 96447.455787, 'm_CD18': 4.46402e-07, 'm_CD19': 4.46402e-07, 'm_CD14': 4.46402e-07, 'm_CD15': 4.46402e-07, 'm_CD16': 4.46402e-07, 'm_CD17': 4.46402e-07, 'm_CD10': 4.46402e-07, 'm_CD11': 4.46402e-07, 'm_CD12': 4.46402e-07, 'm_CD13': 4.46402e-07, 'V_BC19': 0.000225532, 'V_BC18': 0.000225532, 'V_BC11': 0.000225532, 'V_BC10': 0.000225532, 'V_BC13': 0.000225532, 'V_BC12': 0.000225532, 'V_BC15': 0.000225532, 'V_BC14': 0.000225532, 'V_BC17': 0.000225532, 'V_BC16': 0.000225532, 'm_FZ13': 4.46402e-07, 'm_FZ12': 4.46402e-07, 'V_EF20': 0.000225532, 'P_source': 116745.2882, 'm_FZ19': 4.46402e-07, 'm_FZ18': 4.46402e-07, 'P_D20': 98916.378591, 'V_CD9': 0.63153, 'V_CD8': 0.63153, 'V_CD5': 0.63153, 'V_CD4': 0.63153, 'V_CD7': 0.63153, 'V_CD6': 0.631538, 'V_CD1': 0.63153, 'V_CD3': 0.63153, 'V_CD2': 0.63153, 'V_FZ8': 0.000225532, 'V_FZ9': 0.000225532, 'V_FZ6': 0.000225535, 'V_FZ7': 0.000225532, 'V_FZ4': 0.000225532, 'V_FZ5': 0.000225532, 'V_FZ2': 0.000225532, 'V_FZ3': 0.000225532, 'V_FZ1': 0.000225532, 'm_BC20': 4.46402e-07, 'V_EF5': 7.017e-06, 'V_EF4': 7.017e-06, 'V_EF7': 7.017e-06, 'V_EF6': 7.01709e-06, 'V_EF1': 7.017e-06, 'V_EF3': 7.017e-06, 'V_EF2': 7.017e-06, 'V_EF9': 7.017e-06, 'V_EF8': 7.017e-06, 'm_DE10': 4.46402e-07, 'm_DE11': 4.46402e-07, 'V_DE3': 0.000225532, 'm_DE13': 4.46402e-07, 'm_DE14': 4.46402e-07, 'm_DE15': 4.46402e-07, 'V_DE7': 0.000225532, 'm_DE17': 4.46402e-07, 'm_DE18': 4.46402e-07, 'V_DE8': 0.000225532, 'V_FZ18': 0.000225532, 'V_FZ19': 0.000225532, 'V_FZ10': 0.000225532, 'V_FZ11': 0.000225532, 'V_FZ12': 0.000225532, 'V_FZ13': 0.000225532, 'V_FZ14': 0.000225532, 'V_FZ15': 0.000225532, 'V_FZ16': 0.000225532, 'V_FZ17': 0.000225532, 'P_E18': 95956.956033, 'P_E19': 95956.956033, 'P_E16': 95956.956033, 'P_E17': 95956.956033, 'P_E14': 95956.956033, 'P_E15': 95956.956033, 'P_E12': 95956.956033, 'P_E13': 95956.956033, 'P_E10': 95956.956033, 'P_E11': 95956.956033, 'm_FZ15': 4.46402e-07, 'm_FZ14': 4.46402e-07, 'm_FZ17': 4.46402e-07, 'm_FZ16': 4.46402e-07, 'm_FZ11': 4.46402e-07, 'm_FZ10': 4.46402e-07, 'P_C8': 117034.26246, 'P_C9': 117034.26246, 'P_C6': 117034.5053, 'P_C7': 117034.26246, 'P_C4': 117034.26246, 'P_C5': 117034.26246, 'P_C2': 117034.26246, 'P_C3': 117034.26246, 'P_C1': 117034.26246, 'V_DE20': 0.000225532, 'm_EF10': 4.46402e-07, 'm_EF11': 4.46402e-07, 'm_EF12': 4.46402e-07, 'm_EF13': 4.46402e-07, 'm_EF14': 4.46402e-07, 'm_EF15': 4.46402e-07, 'm_EF16': 4.46402e-07, 'm_EF17': 4.46402e-07, 'm_EF18': 4.46402e-07, 'm_EF19': 4.46402e-07, 'm_FZ5': 4.46402e-07, 'm_FZ4': 4.46402e-07, 'm_FZ7': 4.46402e-07, 'm_FZ6': 4.46408e-07, 'V_BC20': 0.000225532, 'm_FZ3': 4.46402e-07, 'm_FZ2': 4.46402e-07, 'm_FZ9': 4.46402e-07, 'm_FZ8': 4.46402e-07, 'm_EF2': 4.46402e-07, 'P_B20': 117235.5023, 'V_CD19': 0.63153, 'V_CD18': 0.63153, 'V_CD15': 0.63153, 'V_CD14': 0.63153, 'V_CD17': 0.63153, 'V_CD16': 0.63153, 'V_CD11': 0.63153, 'V_CD10': 0.63153, 'V_CD13': 0.63153, 'V_CD12': 0.63153, 'P_D19': 98916.379033, 'P_D18': 98916.379033, 'P_D13': 98916.379033, 'P_D12': 98916.379033, 'P_D11': 98916.379033, 'P_D10': 98916.379033, 'P_D17': 98916.379033, 'P_D16': 98916.379033, 'P_D15': 98916.379033, 'P_D14': 98916.379033, 'm_DE6': 4.46408e-07, 'm_DE7': 4.46402e-07, 'm_DE4': 4.46402e-07, 'm_DE5': 4.46402e-07, 'm_DE2': 4.46402e-07, 'm_DE3': 4.46402e-07, 'm_DE1': 4.46402e-07, 'm_DE8': 4.46402e-07, 'm_DE9': 4.46402e-07, 'P_C14': 117034.26246, 'P_C15': 117034.26246, 'P_C16': 117034.26246, 'P_C17': 117034.26246, 'P_C10': 117034.26246, 'P_C11': 117034.26246, 'P_C12': 117034.26246, 'P_C13': 117034.26246, 'P_C18': 117034.26246, 'P_C19': 117034.26246, 'm_BC14': 4.46402e-07, 'm_BC15': 4.46402e-07, 'm_BC16': 4.46402e-07, 'm_BC17': 4.46402e-07, 'm_BC10': 4.46402e-07, 'm_BC11': 4.46402e-07, 'm_BC12': 4.46402e-07, 'm_BC13': 4.46402e-07, 'm_BC18': 4.46402e-07, 'm_BC19': 4.46402e-07, 'P_F5': 96447.455787, 'P_F4': 96447.455787, 'P_F7': 96447.455787, 'P_F6': 96447.455877, 'P_F1': 96447.455787, 'm_EF3': 4.46402e-07, 'P_F3': 96447.455787, 'm_EF1': 4.46402e-07, 'P_F9': 96447.455787, 'P_F8': 96447.455787, 'm_EF8': 4.46402e-07, 'm_EF9': 4.46402e-07, 'P_A': 117235.73662, 'm_AB20': 4.46402e-07, 'm_FZ1': 4.46402e-07, 'V_AB15': 0.00227351, 'V_AB14': 0.00227351, 'V_AB17': 0.00227351, 'V_AB16': 0.00227351, 'V_AB11': 0.00227351, 'V_AB10': 0.00227351, 'V_AB13': 0.00227351, 'V_AB12': 0.00227351, 'V_AB19': 0.00227351, 'V_AB18': 0.00227351}
+
 import string
 alpha = string.uppercase
 
-node = ["","B","C","D","E"]
 num_of_channels = 20
-half = num_of_channels/2.
-num_of_resistors = 6
+num_of_resistors = 5
 origin = [0,0]
-x_scale = 2
-y_scale = 0.8
-offset = 1
+x_scale = 3.2
+y_scale = 0.9
+offset = 2
+
+half = num_of_channels/2.
 
 # Loop that generates the resistive network diagram and labels it with the proper velocities in each leg (i.e. resistor).
 for i in range(num_of_resistors):
     for j in range(num_of_channels):
     	jay = (j-half+.5)*y_scale+origin[1] #adjusts nodes in y by centering them around origin and scaling the spacing.
-	print(r"\draw (%s,%s) node[font=\small, anchor=east]{A} to (%s,%s);" % (origin[0], origin[1], origin[0]+offset, jay)) # Draws the horizontal resistors.
-	print(r"\draw (%s,%s) to [R=$%s$,-*,i^>=$$] (%s,%s) node[font=\small, anchor=south]{%s};" % (i*x_scale+origin[0]+offset, jay, "v", (i+1)*x_scale+origin[0]+offset, jay, str(num_of_channels-j)+alpha[i+1])) # Draws the horizontal resistors.
+	print(r"\draw (%s,%s) node[font=\tiny, anchor=north east]{%s} node[font=\tiny, anchor=south east]{A} to (%s,%s);" % (origin[0], origin[1], ans["P_A"], origin[0]+offset, jay)) # Draws the horizontal resistors.
+	print(r"\draw (%s,%s) to [R=$%s$,-*,i^>=$$] (%s,%s) node[font=\tiny, anchor=south]{%s} node[font=\tiny, anchor=north]{%s};" % (i*x_scale+origin[0]+offset, jay, ans["V_"+alpha[i:i+2]+str(num_of_channels-j)], (i+1)*x_scale+origin[0]+offset, jay, str(num_of_channels-j)+alpha[i+1], ans["P_"+alpha[i+1]+str(num_of_channels-j)])) # Draws the horizontal resistors.
 
 \end{pycode}
 
 \end{circuitikz}
+
+\end{landscape}
 
 \end{document}
