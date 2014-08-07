@@ -21,12 +21,14 @@ def pipe():
     """ 
     total_unknowns = 222 # Total number of unkown variables.  
     file_name = 'coefficients-20.xlsx'
-    variable_names = xlsnatch(os.path.join(mypath,file_name),1,2,2,1,total_unknowns+1,"list") # Import variable names from Excel as list. 
+    variable_names = xlsnatch(os.path.join(mypath,file_name),1,2,2,1,total_unknowns+2,"list") # Import variable names from Excel as list. 
     num_pressure_unknowns = 0 # Initiate variable.
     for name in variable_names[0][:]:
         num_pressure_unknowns += (name[:1].encode('ascii','ignore')=="P") # Determine how many pressure unknowns there are.
            
     Diameters = xlsnatch(os.path.join(mypath,file_name),0,50,2,1,total_unknowns-num_pressure_unknowns+1,"matrix") # Snatch diameters [m] for later calculations.
+    P_exit = xlsnatch(os.path.join(mypath,file_name),0,7,2,1,1,"list") # Snatch the exit pressure.
+    vel_given = xlsnatch(os.path.join(mypath,file_name),0,32,2,1,1,"list") # Snatch the given velocity.
     rho = 1000 # Density of water [kg/m^3].
     
     # Set coefficients for equation Ax+Bx^2+C.
@@ -76,7 +78,8 @@ def pipe():
     ans = []    
     ans[0:num_pressure_unknowns] = [round(x,-int(floor(log10(abs(x)/10**pressure_precision)))) for x in X[0:num_pressure_unknowns,0]] # Round numbers to certain number of sig figs based on precision      
     ans[num_pressure_unknowns:X.shape[0]] = [round(x,-int(floor(log10(abs(x)/10**velocity_precision)))) for x in X[num_pressure_unknowns:X.shape[0],0]] # Round numbers to certain number of sig figs based on precision
-    ans.append(round(C[len(C)-1,0]/Diameters[0,len(C)-num_pressure_unknowns]**2,-int(floor(log10(abs(C[len(C)-1,0]/Diameters[0,len(C)-num_pressure_unknowns]**2)/10**velocity_precision))))) # Append the given velocity
+    ans.append(round(vel_given[0][0],-int(floor(log10(abs(vel_given[0][0])/10**velocity_precision))))) # Append the given velocity
+    ans.append(P_exit[0][0]) # Append the given pressure
     
     m_dot = [round(x,-int(floor(log10(abs(x)/10**velocity_precision)))) for x in multiply(multiply(Diameters[0,:-1].T,Diameters[0,:-1].T),X[num_pressure_unknowns:,0])*pi*rho/4] # Calculate mass flow rates in each branch.
     m_dot.append(round(ans[len(ans)-1]*Diameters[0,len(C)-num_pressure_unknowns]**2*pi*rho/4,-int(floor(log10(abs(ans[len(ans)-1]*Diameters[0,len(C)-num_pressure_unknowns]**2*pi*rho/4)/10**velocity_precision))))) # Append the calculated mass flow rate from given velocity
@@ -85,7 +88,7 @@ def pipe():
     variables = {}
     for i in range(0,len(ans)):
         variables[variable_names[0][i].encode('ascii','ignore')] = ans[i]
-        if i >= num_pressure_unknowns:
+        if len(ans)-1 > i >= num_pressure_unknowns:
             variables['m_'+variable_names[0][i].encode('ascii','ignore')[2:]] = m_dot[i-num_pressure_unknowns]
 
     return variables
