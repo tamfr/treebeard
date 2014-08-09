@@ -10,7 +10,7 @@ Numerical root finder using Newton's method for systems of equations with form A
 
 from __future__ import division
 from math import floor, log10, pi
-from numpy import matrix, zeros, ones, multiply
+from numpy import matrix, zeros, ones, multiply, divide, arange, tile
 from pysnatch import xlsnatch
 import os
 mypath = os.path.dirname(__file__) # Makes available the absolute path to the directory of this file such that if it is imported and gets executed outside its original directory, any subsequently imported files can be found.
@@ -23,12 +23,16 @@ def pipe():
     file_name = 'coefficients-20.xlsx'
     variable_names = xlsnatch(os.path.join(mypath,file_name),1,2,2,1,total_unknowns+2,"list") # Import variable names from Excel as list. 
     num_pressure_unknowns = 0 # Initiate variable.
-    for name in variable_names[0][:]:
+    for name in variable_names[0][:total_unknowns]:
         num_pressure_unknowns += (name[:1].encode('ascii','ignore')=="P") # Determine how many pressure unknowns there are.
-           
+    
+    num_channels = 0
+    for name in variable_names[0][:total_unknowns]:
+        num_channels += (name[:3].encode('ascii','ignore')=="P_B") 
+       
     Diameters = xlsnatch(os.path.join(mypath,file_name),0,50,2,1,total_unknowns-num_pressure_unknowns+1,"matrix") # Snatch diameters [m] for later calculations.
-    P_exit = xlsnatch(os.path.join(mypath,file_name),0,7,2,1,1,"list") # Snatch the exit pressure.
-    vel_given = xlsnatch(os.path.join(mypath,file_name),0,32,2,1,1,"list") # Snatch the given velocity.
+    P_exit = xlsnatch(os.path.join(mypath,file_name),0,7,2,1,1,"list")[0][0] # Snatch the exit pressure.
+    vel_given = xlsnatch(os.path.join(mypath,file_name),0,32,2,1,1,"list")[0][0] # Snatch the given velocity.
     rho = 1000 # Density of water [kg/m^3].
     
     # Set coefficients for equation Ax+Bx^2+C.
@@ -46,16 +50,17 @@ def pipe():
     # Define parameters to run loop
     n = 0 # Define iteration counter.
     max_iterations = 600 # Define max number of iterations.
-    tol = 2e-11 # Define tolerance upon which to interate.
+    tol = 1e-5 # Define tolerance upon which to interate.
     
     # Initial guesses
-    vel_guess = .0000003 # Good guest found to be .0000003 to yield all positive roots.
-    pressure_guess = 103421.25
+    #vel_guess = .003 # Good guest found to be .0000003 to yield all positive roots.
+    pressure_guess = 100000
     
     X = matrix(ones((A.shape[0],1))*pressure_guess)
-    X[num_pressure_unknowns:X.shape[0],0] = vel_guess
-    #X = matrix('[-5;7;-3]')
-    
+    #X[2:num_pressure_unknowns,0] = multiply(matrix(tile(arange(1,pressure_guess/P_exit+(pressure_guess/P_exit-1)/((num_pressure_unknowns-2)/num_channels),(pressure_guess/P_exit-1)/((num_pressure_unknowns-2)/num_channels-1)),num_channels)).T[::-1],P_exit)
+    X[num_pressure_unknowns:X.shape[0],0] = multiply(divide(1,multiply(Diameters[0,:-1].T,Diameters[0,:-1].T)),vel_given*Diameters[0,-1]**2)
+    #X[num_pressure_unknowns:X.shape[0],0] = vel_guess
+
     # Newton's method for finding roots
     while any(abs(v) > tol for v in f(X)):
     
@@ -66,10 +71,11 @@ def pipe():
             
         X = X - J.I*f(X)
         
-        #X = matrix([(abs(X[x,0]) if X[x,0] < 0 else X[x,0]) for x in range(0,len(X))]).T
+        #X = matrix([(abs(X[x,0]) if X[x,0] < 0 else X[x,0]) for x in range(0,len(X))]).T   
         
         if n < max_iterations:
             n = n + 1
+            print n
         else:
             tol = 999999999999999999
     
@@ -78,8 +84,8 @@ def pipe():
     ans = []    
     ans[0:num_pressure_unknowns] = [round(x,-int(floor(log10(abs(x)/10**pressure_precision)))) for x in X[0:num_pressure_unknowns,0]] # Round numbers to certain number of sig figs based on precision      
     ans[num_pressure_unknowns:X.shape[0]] = [round(x,-int(floor(log10(abs(x)/10**velocity_precision)))) for x in X[num_pressure_unknowns:X.shape[0],0]] # Round numbers to certain number of sig figs based on precision
-    ans.append(round(vel_given[0][0],-int(floor(log10(abs(vel_given[0][0])/10**velocity_precision))))) # Append the given velocity
-    ans.append(P_exit[0][0]) # Append the given pressure
+    ans.append(round(vel_given,-int(floor(log10(abs(vel_given)/10**velocity_precision))))) # Append the given velocity
+    ans.append(P_exit) # Append the given pressure
     
     m_dot = [round(x,-int(floor(log10(abs(x)/10**velocity_precision)))) for x in multiply(multiply(Diameters[0,:-1].T,Diameters[0,:-1].T),X[num_pressure_unknowns:,0])*pi*rho/4] # Calculate mass flow rates in each branch.
     m_dot.append(round(ans[len(ans)-1]*Diameters[0,len(C)-num_pressure_unknowns]**2*pi*rho/4,-int(floor(log10(abs(ans[len(ans)-1]*Diameters[0,len(C)-num_pressure_unknowns]**2*pi*rho/4)/10**velocity_precision))))) # Append the calculated mass flow rate from given velocity
