@@ -50,7 +50,7 @@ half = num_of_channels/2.
 for i in range(num_of_resistors):
     for j in range(num_of_channels):
     	jay = (j-half+.5)*y_scale+origin[1] #adjusts nodes in y by centering them around origin and scaling the spacing.
-	print(r"\draw (%s,%s) node[font=\tiny, anchor=north]{%s} node[font=\tiny, anchor=south]{Source} to [R=$$,*-*,i^>=$$, bipoles/length=0.5cm] (%s,%s);" % (origin[0]-1*x_scale, origin[1], ans["P_source"], origin[0], origin[1])) # Draws the source.
+	print(r"\draw (%s,%s) node[font=\tiny, anchor=north]{%s} node[font=\tiny, anchor=south]{Source} to [R=$%s$,*-*,i^>=$$, bipoles/length=0.5cm] (%s,%s);" % (origin[0]-1*x_scale, origin[1], ans["P_source"], ans["V_SA"], origin[0], origin[1])) # Draws the source.
 	print(r"\draw (%s,%s) node[font=\tiny, anchor=north east]{%s} node[font=\tiny, anchor=south east]{A} to (%s,%s);" % (origin[0], origin[1], ans["P_A"], origin[0]+offset, jay)) # Draws source the horizontal resistors.
 	print(r"\draw (%s,%s) to [R=$%s$,-*,i^>=$$, bipoles/length=0.5cm] (%s,%s) node[font=\tiny, anchor=south]{%s} node[font=\tiny, anchor=north]{%s};" % (i*x_scale+origin[0]+offset, jay, ans["V_"+alpha[i:i+2]+str(num_of_channels-j)], (i+1)*x_scale+origin[0]+offset, jay, str(num_of_channels-j)+alpha[i+1], ans["P_"+alpha[i+1]+str(num_of_channels-j)*(num_of_resistors-1!=i)])) # Draws the horizontal resistors.
 

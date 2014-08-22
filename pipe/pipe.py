@@ -50,7 +50,7 @@ def pipe():
     # Define parameters to run loop
     n = 0 # Define iteration counter.
     max_iterations = 600 # Define max number of iterations.
-    tol = 1e-5 # Define tolerance upon which to interate.
+    tol = 1e-6 # Define tolerance upon which to interate.
     
     # Initial guesses
     #vel_guess = .003 # Good guest found to be .0000003 to yield all positive roots.
