@@ -21,6 +21,8 @@
 from pipe.pipe import pipe # Import the module that runs the python program pipe.py, which analyzes the fluidics network.
 ans = pipe() # Run the function that returns all velocities and mass flow rates, and other information for the fluidics network stored as a python dictionary.
 
+print(r"Required induced pressure: %s Pa or %s psi" % (ans["P_source"]-ans["P_G"], (ans["P_source"]-ans["P_G"])*0.000145037738))
+
 \end{pycode}
 
 % =========================================== new section =========================================== 
@@ -31,8 +33,6 @@ ans = pipe() # Run the function that returns all velocities and mass flow rates,
 \begin{circuitikz}[font=\tiny]	
 
 \begin{pycode}
-
-#ans={}
 
 import string
 alpha = string.uppercase
