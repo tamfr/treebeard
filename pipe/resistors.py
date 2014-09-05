@@ -63,8 +63,9 @@ for resistor in Resistors:
     n += 1
 
 def fillMatrix():
-    A = matrix(zeros((2*len(Resistors._resistors),len(Resistors._resistors))))
-    B = matrix(zeros((2*len(Resistors._resistors),len(Resistors._resistors))))
+    length = len(Resistors._resistors)
+    A = matrix(zeros((2*length,2*length)))
+    B = matrix(zeros((2*length,2*length)))
     i = 0; k = 0 
     for resistor in Resistors:                
         j = 0
@@ -85,23 +86,28 @@ def fillMatrix():
         n = 0 # Reset n, which gets set to 1 if an equation is made      
         for next_resistor in Resistors:                        
             if resistor.name == next_resistor.predecessor:            
+                n += 1                
                 last_in_line = next_resistor.predecessor # Tracks the last resistor in a line.                        
                 A[i,k] = -32*viscosity*resistor.length/resistor.diameter**2 # Major head loss              
+                print i,j                
+                A[i+j-(j-1)*(n==1),k+length] = 1 # Function for rows in the A index allows for multiple channels to have same pressure in.
+                A[i+j-(j-1)*(n==1),j*(n>1)+(k+1)*(n==1)+length] = -1
                 if resistor.diameter < next_resistor.diameter:                 
                     B[i,k] = -density*(1-(resistor.diameter/next_resistor.diameter)**2)**2/2 # Minor headless for sudden expansion.
                 elif resistor.diameter > next_resistor.diameter:                 
                     B[i,j] = -density*k_c/2 # Minor headless for sudden contraction.
-                n = 1
             j += 1
         if resistor.predecessor == last_in_line: # Exit flows
             A[i,k] = -32*viscosity*resistor.length/resistor.diameter**2 # Assigns the equation coefficient for major head loss for the last resistor in a line.
+            #A[i,k+length] = 1 
+            #A[i,k+length+1] = -1            
             B[i,k] = -density/2 # Minor headless for sudden expansion into large space.                  
             last_in_line = None
             n = 1
         if n > 0:
             i += 1 # Increment i if an equation was made.
         k += 1
-    A.resize((i,j)); B.resize((i,j))
+    A.resize((i,2*j)); B.resize((i,2*j))
     savetxt("matrix_A.txt", A, fmt='%12.6g', delimiter='\t') # Creates matrix.tex file and enables write mode.
     savetxt("matrix_B.txt", B, fmt='%12.6g', delimiter='\t') # Creates matrix.tex file and enables write mode.
     return A
