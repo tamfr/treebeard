@@ -17,7 +17,7 @@ class Resistors(object):
    __metaclass__ = IterResistors
    _resistors = []
    
-   def __init__(self, name, part, length, diameter, delta_z, predecessor = None):
+   def __init__(self, name, part, length, diameter, delta_z, predecessor = None, velocity = None):
         self._resistors.append(self)
         self.name = name
         self.part = part
@@ -25,6 +25,7 @@ class Resistors(object):
         self.diameter = diameter
         self.delta_z = delta_z
         self.predecessor = str(predecessor)
+        self.velocity = velocity
         
 
 
@@ -38,7 +39,7 @@ P_atm = 97421.6 # Pa
 
 def system(lines):
     # Source
-    Resistors('AB','syringe',.1,.267,.1)
+    Resistors('AB','syringe',.1,.267,.1, None,None)
     
     # Line
     for line in range(1,lines+1):
@@ -68,13 +69,14 @@ def fillMatrix():
     B = matrix(zeros((2*length,2*length)))
     i = 0; k = 0 
     for resistor in Resistors:                
-        j = 0
-        n = 0        
+        j = 0; n = 0        
         for next_resistor in Resistors:
-            if resistor.name == next_resistor.predecessor:            
+            if resistor.name == next_resistor.predecessor and resistor.velocity == None:            
                 A[i,k] = resistor.diameter**2 # Coefficient for the inlet. 
                 A[i,j] = -next_resistor.diameter**2 # Coefficient for the outlet(s).
                 n = 1
+            #if resistor.name == next_resistor.predecessor and resistor.velocity != None:
+            #    j -= 1
             j += 1
         if n > 0:
             i += 1 # Iterate i only if n = 1 which signifies coefficients were made for an equation.
@@ -98,9 +100,7 @@ def fillMatrix():
                     B[i,j] = -density*k_c/2 # Minor headless for sudden contraction.
             j += 1
         if resistor.predecessor == last_in_line: # Exit flows
-            A[i,k] = -32*viscosity*resistor.length/resistor.diameter**2 # Assigns the equation coefficient for major head loss for the last resistor in a line.
-            #A[i,k+length] = 1 
-            #A[i,k+length+1] = -1            
+            A[i,k] = -32*viscosity*resistor.length/resistor.diameter**2 # Assigns the equation coefficient for major head loss for the last resistor in a line.           
             B[i,k] = -density/2 # Minor headless for sudden expansion into large space.                  
             last_in_line = None
             n = 1
